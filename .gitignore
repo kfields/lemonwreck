@@ -1,13 +1,27 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
+syntax: glob
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
+.DS_Store
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
+*.orig
+*~
+
+project
+bin
+obj
+release
+ipch
+
+Makefile
+*.make
+*.xcodeproj
+*.swp
+*.sdf
+*.sln
+*.suo
+*.ncb
+*.vcproj*
+*.vcxproj*
+*.opensdf
+*.workspace
+*.project
+*.tags
