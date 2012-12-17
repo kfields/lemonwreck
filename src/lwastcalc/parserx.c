@@ -4,14 +4,11 @@
 /* First off, code is included that follows the "include" declaration
 ** in the input grammar file. */
 #include <stdio.h>
-#line 1 "parserx.y"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "scanner.h"
 #include "parser.h"
-#include "calculator.h"
-#line 15 "parserx.c"
 /* Next is all token values, in a form suitable for use by makeheaders.
 ** This section will be null unless lemon is run with the -m switch.
 */
@@ -68,6 +65,7 @@
 typedef union {
   int yyinit;
   ParseTOKENTYPE yy0;
+  ast_node* yy8;
 } YYMINORTYPE;
 #ifndef YYSTACKDEPTH
 #define YYSTACKDEPTH 100
@@ -541,10 +539,8 @@ static void yyStackOverflow(yyParser *yypParser, YYMINORTYPE *yypMinor){
    while( yypParser->yyidx>=0 ) yy_pop_parser_stack(yypParser);
    /* Here code is inserted which will execute if the parser
    ** stack every overflows */
-#line 18 "parserx.y"
 
 	fprintf(stderr,"Giving up.  Parser stack overflow\n");
-#line 548 "parserx.c"
    ParseARG_STORE; /* Suppress warning about unused %extra_argument var */
 }
 
@@ -664,40 +660,20 @@ static void yy_reduce(
   **     break;
   */
       case 0: /* in ::= expr */
-#line 32 "parserx.y"
-{pCalc->answer = yymsp[0].minor.yy0->data.num;}
-#line 670 "parserx.c"
+{pCalc->ast = yymsp[0].minor.yy8;}
         break;
       case 1: /* expr ::= INTEGER */
       case 2: /* expr ::= FLOAT */ yytestcase(yyruleno==2);
-#line 34 "parserx.y"
-{ yygotominor.yy0 = yymsp[0].minor.yy0; }
-#line 676 "parserx.c"
+{ yygotominor.yy8 = create_literal_ast(yymsp[0].minor.yy0); }
         break;
       case 3: /* expr ::= expr ADD expr */
-#line 37 "parserx.y"
-{yygotominor.yy0 = add(pCalc, yymsp[-2].minor.yy0, yymsp[0].minor.yy0);}
-#line 681 "parserx.c"
-        break;
-      case 4: /* expr ::= expr SUB expr */
-#line 38 "parserx.y"
-{yygotominor.yy0 = subtract(pCalc, yymsp[-2].minor.yy0, yymsp[0].minor.yy0);}
-#line 686 "parserx.c"
-        break;
-      case 5: /* expr ::= expr MUL expr */
-#line 39 "parserx.y"
-{yygotominor.yy0 = multiply(pCalc, yymsp[-2].minor.yy0, yymsp[0].minor.yy0);}
-#line 691 "parserx.c"
-        break;
-      case 6: /* expr ::= expr DIV expr */
-#line 40 "parserx.y"
-{yygotominor.yy0 = divide(pCalc, yymsp[-2].minor.yy0, yymsp[0].minor.yy0);}
-#line 696 "parserx.c"
+      case 4: /* expr ::= expr SUB expr */ yytestcase(yyruleno==4);
+      case 5: /* expr ::= expr MUL expr */ yytestcase(yyruleno==5);
+      case 6: /* expr ::= expr DIV expr */ yytestcase(yyruleno==6);
+{yygotominor.yy8 = create_binary_ast(yymsp[-1].minor.yy0, yymsp[-2].minor.yy8, yymsp[0].minor.yy8);}
         break;
       case 7: /* expr ::= LPAREN expr RPAREN */
-#line 42 "parserx.y"
-{ yygotominor.yy0 = yymsp[-1].minor.yy0; }
-#line 701 "parserx.c"
+{ yygotominor.yy8 = yymsp[-1].minor.yy8; }
         break;
       default:
         break;
@@ -745,10 +721,8 @@ static void yy_parse_failed(
   while( yypParser->yyidx>=0 ) yy_pop_parser_stack(yypParser);
   /* Here code is inserted which will be executed whenever the
   ** parser fails */
-#line 15 "parserx.y"
 
 	fprintf(stderr,"Giving up.  Parser is hopelessly lost...\n");
-#line 752 "parserx.c"
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 #endif /* YYNOERRORRECOVERY */
@@ -763,12 +737,9 @@ static void yy_syntax_error(
 ){
   ParseARG_FETCH;
 #define TOKEN (yyminor.yy0)
-#line 12 "parserx.y"
 
 	fprintf(stderr, "Syntax error\n");
-#line 30 "parserx.y"
 printf("syntax error\n");
-#line 772 "parserx.c"
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 
@@ -787,10 +758,8 @@ static void yy_accept(
   while( yypParser->yyidx>=0 ) yy_pop_parser_stack(yypParser);
   /* Here code is inserted which will be executed whenever the
   ** parser accepts */
-#line 9 "parserx.y"
 
 	printf("parsing complete!\n");
-#line 794 "parserx.c"
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 

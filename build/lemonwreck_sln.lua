@@ -35,4 +35,5 @@ solution "LemonWreck"
 		--buildoptions { "-std=c++11" }
 		--buildoptions { "-std=gnu++0x" }
 
-    include "../src/lwcalc"        
+	include "../src/lwastcalc"
+	include "../src/lwcalc"

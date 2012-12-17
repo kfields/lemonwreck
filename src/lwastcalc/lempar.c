@@ -4,14 +4,7 @@
 /* First off, code is included that follows the "include" declaration
 ** in the input grammar file. */
 #include <stdio.h>
-#line 1 "parserx.y"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include "scanner.h"
-#include "parser.h"
-#include "calculator.h"
-#line 15 "parserx.c"
+%%
 /* Next is all token values, in a form suitable for use by makeheaders.
 ** This section will be null unless lemon is run with the -m switch.
 */
@@ -22,6 +15,7 @@
 **
 ** Each symbol here is a terminal symbol in the grammar.
 */
+%%
 /* Make sure the INTERFACE macro is defined.
 */
 #ifndef INTERFACE
@@ -61,23 +55,7 @@
 **    YYERRORSYMBOL      is the code number of the error symbol.  If not
 **                       defined, then do no error processing.
 */
-#define YYCODETYPE unsigned char
-#define YYNOCODE 13
-#define YYACTIONTYPE unsigned char
-#define ParseTOKENTYPE scanner_token*
-typedef union {
-  int yyinit;
-  ParseTOKENTYPE yy0;
-} YYMINORTYPE;
-#ifndef YYSTACKDEPTH
-#define YYSTACKDEPTH 100
-#endif
-#define ParseARG_SDECL  calculator *pCalc;
-#define ParseARG_PDECL , calculator *pCalc
-#define ParseARG_FETCH  calculator *pCalc = yypParser->pCalc
-#define ParseARG_STORE yypParser->pCalc = pCalc
-#define YYNSTATE 15
-#define YYNRULE 8
+%%
 #define YY_NO_ACTION      (YYNSTATE+YYNRULE+2)
 #define YY_ACCEPT_ACTION  (YYNSTATE+YYNRULE+1)
 #define YY_ERROR_ACTION   (YYNSTATE+YYNRULE)
@@ -146,35 +124,7 @@ static const YYMINORTYPE yyzerominor = { 0 };
 **                     shifting non-terminals after a reduce.
 **  yy_default[]       Default action for each state.
 */
-#define YY_ACTTAB_COUNT (22)
-static const YYACTIONTYPE yy_action[] = {
- /*     0 */    15,    3,    2,    5,    4,    3,    2,    5,    4,    3,
- /*    10 */     2,    9,   10,    8,   14,   13,    7,   24,   12,   11,
- /*    20 */     1,    6,
-};
-static const YYCODETYPE yy_lookahead[] = {
- /*     0 */     0,    5,    6,    3,    4,    5,    6,    3,    4,    5,
- /*    10 */     6,   10,    8,   10,    1,    2,   10,   11,   10,   10,
- /*    20 */     7,   10,
-};
-#define YY_SHIFT_USE_DFLT (-5)
-#define YY_SHIFT_COUNT (9)
-#define YY_SHIFT_MIN   (-4)
-#define YY_SHIFT_MAX   (13)
-static const signed char yy_shift_ofst[] = {
- /*     0 */    13,   13,   13,   13,   13,   13,    4,    0,   -4,   -4,
-};
-#define YY_REDUCE_USE_DFLT (-1)
-#define YY_REDUCE_COUNT (5)
-#define YY_REDUCE_MIN   (0)
-#define YY_REDUCE_MAX   (11)
-static const signed char yy_reduce_ofst[] = {
- /*     0 */     6,   11,    9,    8,    3,    1,
-};
-static const YYACTIONTYPE yy_default[] = {
- /*     0 */    23,   23,   23,   23,   23,   23,   23,   23,   19,   18,
- /*    10 */    22,   21,   20,   17,   16,
-};
+%%
 
 /* The next table maps tokens into fallback tokens.  If a construct
 ** like the following:
@@ -188,6 +138,7 @@ static const YYACTIONTYPE yy_default[] = {
 */
 #ifdef YYFALLBACK
 static const YYCODETYPE yyFallback[] = {
+%%
 };
 #endif /* YYFALLBACK */
 
@@ -266,9 +217,7 @@ void ParseTrace(FILE *TraceFILE, char *zTracePrompt){
 /* For tracing shifts, the names of all terminals and nonterminals
 ** are required.  The following table supplies these names */
 static const char *const yyTokenName[] = { 
-  "$",             "INTEGER",       "FLOAT",         "ADD",         
-  "SUB",           "MUL",           "DIV",           "LPAREN",      
-  "RPAREN",        "error",         "expr",          "in",          
+%%
 };
 #endif /* NDEBUG */
 
@@ -276,14 +225,7 @@ static const char *const yyTokenName[] = {
 /* For tracing reduce actions, the names of all rules are required.
 */
 static const char *const yyRuleName[] = {
- /*   0 */ "in ::= expr",
- /*   1 */ "expr ::= INTEGER",
- /*   2 */ "expr ::= FLOAT",
- /*   3 */ "expr ::= expr ADD expr",
- /*   4 */ "expr ::= expr SUB expr",
- /*   5 */ "expr ::= expr MUL expr",
- /*   6 */ "expr ::= expr DIV expr",
- /*   7 */ "expr ::= LPAREN expr RPAREN",
+%%
 };
 #endif /* NDEBUG */
 
@@ -362,6 +304,7 @@ static void yy_destructor(
     ** which appear on the RHS of the rule, but which are not used
     ** inside the C code.
     */
+%%
     default:  break;   /* If no destructor action specified: do nothing */
   }
 }
@@ -541,10 +484,7 @@ static void yyStackOverflow(yyParser *yypParser, YYMINORTYPE *yypMinor){
    while( yypParser->yyidx>=0 ) yy_pop_parser_stack(yypParser);
    /* Here code is inserted which will execute if the parser
    ** stack every overflows */
-#line 18 "parserx.y"
-
-	fprintf(stderr,"Giving up.  Parser stack overflow\n");
-#line 548 "parserx.c"
+%%
    ParseARG_STORE; /* Suppress warning about unused %extra_argument var */
 }
 
@@ -601,14 +541,7 @@ static const struct {
   YYCODETYPE lhs;         /* Symbol on the left-hand side of the rule */
   unsigned char nrhs;     /* Number of right-hand side symbols in the rule */
 } yyRuleInfo[] = {
-  { 11, 1 },
-  { 10, 1 },
-  { 10, 1 },
-  { 10, 3 },
-  { 10, 3 },
-  { 10, 3 },
-  { 10, 3 },
-  { 10, 3 },
+%%
 };
 
 static void yy_accept(yyParser*);  /* Forward Declaration */
@@ -663,44 +596,7 @@ static void yy_reduce(
   **  #line <lineno> <thisfile>
   **     break;
   */
-      case 0: /* in ::= expr */
-#line 32 "parserx.y"
-{pCalc->answer = yymsp[0].minor.yy0->data.num;}
-#line 670 "parserx.c"
-        break;
-      case 1: /* expr ::= INTEGER */
-      case 2: /* expr ::= FLOAT */ yytestcase(yyruleno==2);
-#line 34 "parserx.y"
-{ yygotominor.yy0 = yymsp[0].minor.yy0; }
-#line 676 "parserx.c"
-        break;
-      case 3: /* expr ::= expr ADD expr */
-#line 37 "parserx.y"
-{yygotominor.yy0 = add(pCalc, yymsp[-2].minor.yy0, yymsp[0].minor.yy0);}
-#line 681 "parserx.c"
-        break;
-      case 4: /* expr ::= expr SUB expr */
-#line 38 "parserx.y"
-{yygotominor.yy0 = subtract(pCalc, yymsp[-2].minor.yy0, yymsp[0].minor.yy0);}
-#line 686 "parserx.c"
-        break;
-      case 5: /* expr ::= expr MUL expr */
-#line 39 "parserx.y"
-{yygotominor.yy0 = multiply(pCalc, yymsp[-2].minor.yy0, yymsp[0].minor.yy0);}
-#line 691 "parserx.c"
-        break;
-      case 6: /* expr ::= expr DIV expr */
-#line 40 "parserx.y"
-{yygotominor.yy0 = divide(pCalc, yymsp[-2].minor.yy0, yymsp[0].minor.yy0);}
-#line 696 "parserx.c"
-        break;
-      case 7: /* expr ::= LPAREN expr RPAREN */
-#line 42 "parserx.y"
-{ yygotominor.yy0 = yymsp[-1].minor.yy0; }
-#line 701 "parserx.c"
-        break;
-      default:
-        break;
+%%
   };
   yygoto = yyRuleInfo[yyruleno].lhs;
   yysize = yyRuleInfo[yyruleno].nrhs;
@@ -745,10 +641,7 @@ static void yy_parse_failed(
   while( yypParser->yyidx>=0 ) yy_pop_parser_stack(yypParser);
   /* Here code is inserted which will be executed whenever the
   ** parser fails */
-#line 15 "parserx.y"
-
-	fprintf(stderr,"Giving up.  Parser is hopelessly lost...\n");
-#line 752 "parserx.c"
+%%
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 #endif /* YYNOERRORRECOVERY */
@@ -763,12 +656,7 @@ static void yy_syntax_error(
 ){
   ParseARG_FETCH;
 #define TOKEN (yyminor.yy0)
-#line 12 "parserx.y"
-
-	fprintf(stderr, "Syntax error\n");
-#line 30 "parserx.y"
-printf("syntax error\n");
-#line 772 "parserx.c"
+%%
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 
@@ -787,10 +675,7 @@ static void yy_accept(
   while( yypParser->yyidx>=0 ) yy_pop_parser_stack(yypParser);
   /* Here code is inserted which will be executed whenever the
   ** parser accepts */
-#line 9 "parserx.y"
-
-	printf("parsing complete!\n");
-#line 794 "parserx.c"
+%%
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 

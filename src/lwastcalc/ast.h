@@ -18,4 +18,7 @@ typedef struct _ast_node {
 	} node ;
 } ast_node;
 
+ast_node* create_literal_ast(scanner_token *token);
+ast_node* create_binary_ast(scanner_token *token, ast_node* left, ast_node* right);
+
 #endif //_AST_H

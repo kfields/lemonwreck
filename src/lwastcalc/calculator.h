@@ -1,7 +1,10 @@
 #ifndef _CALCULATOR_H
 #define _CALCULATOR_H
 
+#include "ast.h"
+
 typedef struct _calculator {
+	ast_node *ast;
 	float answer;
 	char* errormsg;
 } calculator;
