@@ -1,6 +1,7 @@
-#ifndef _LEMON_PARSER_H
-#define _LEMON_PARSER_H
+#ifndef _PARSER_H
+#define _PARSER_H
 
+#include "ast.h"
 #include "scanner.h"
 #include "parserx.h"
 #include "calculator.h"

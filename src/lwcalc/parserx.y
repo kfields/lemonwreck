@@ -3,11 +3,10 @@
 #include <stdlib.h>
 #include "scanner.h"
 #include "parser.h"
-#include "calculator.h"
 }
 
 %parse_accept {
-	printf("parsing complete!\n");
+	//printf("Parsing complete!\n");
 }
 %syntax_error {
 	fprintf(stderr, "Syntax error\n");
@@ -21,22 +20,21 @@
 %extra_argument { calculator *pCalc}
 %token_prefix TOKEN_
 %token_type {scanner_token*}
-%default_type {scanner_token*}
-%type expr {scanner_token*}
+%default_type {ast_node*}
+%type expr {ast_node*}
 %type INTEGER {scanner_token*}
 %type FLOAT {scanner_token*}
 %left ADD SUB.
 %left MUL DIV.
-%syntax_error {printf("syntax error\n");}
 
-in ::= expr(A). {pCalc->answer = A->data.num;}
+in ::= expr(A). {pCalc->ast = A;}
 
-expr(A) ::= INTEGER(B). { A = B; }
-expr(A) ::= FLOAT(B). { A = B; }
+expr(A) ::= INTEGER(B). { A = create_literal_ast(B); }
+expr(A) ::= FLOAT(B). { A = create_literal_ast(B); }
 
-expr(A) ::= expr(B) ADD expr(C). {A = add(pCalc, B, C);}
-expr(A) ::= expr(B) SUB expr(C). {A = subtract(pCalc, B, C);}
-expr(A) ::= expr(B) MUL expr(C). {A = multiply(pCalc, B, C);}
-expr(A) ::= expr(B) DIV expr(C). {A = divide(pCalc, B, C);}
+expr(A) ::= expr(B) ADD(T) expr(C). {A = create_binary_ast(T, B, C);}
+expr(A) ::= expr(B) SUB(T) expr(C). {A = create_binary_ast(T, B, C);}
+expr(A) ::= expr(B) MUL(T) expr(C). {A = create_binary_ast(T, B, C);}
+expr(A) ::= expr(B) DIV(T) expr(C). {A = create_binary_ast(T, B, C);}
 
 expr(A) ::= LPAREN expr(B) RPAREN. { A = B; }

@@ -1,11 +1,15 @@
 #ifndef _CALCULATOR_H
 #define _CALCULATOR_H
 
+#include "ast.h"
+
 typedef struct _calculator {
+	ast_node *ast;
 	float answer;
 	char* errormsg;
 } calculator;
 
+void clear(calculator* calc);
 int eval_string(calculator* calc, char* s);
 void error(calculator *calc, char *errmsg);
 
