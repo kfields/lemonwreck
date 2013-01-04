@@ -7,10 +7,26 @@ project "Lemon"
     }
 	targetname "lemon"
     targetdir "../../bin"
-    --links { "BwCore", "BwAi", "BwAxl" }
-    --libdirs {"C:/AAA/DevDepends/boost_1_51/lib"}
+	
     configuration { "Debug" }
         kind    "ConsoleApp"
 	  
 	configuration { "Release" }
         kind    "ConsoleApp"
+
+project "LemonCpp"
+    includedirs {
+        ".", 
+    }
+    files {
+        "lemoncpp.c"
+    }
+	targetname "lemoncpp"
+    targetdir "../../bin"
+	
+    configuration { "Debug" }
+        kind    "ConsoleApp"
+	  
+	configuration { "Release" }
+        kind    "ConsoleApp"
+		
