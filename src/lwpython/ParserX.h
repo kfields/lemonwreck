@@ -1,0 +1,16 @@
+#define TOKEN_INTEGER                         1
+#define TOKEN_FLOAT                           2
+#define TOKEN_ADD                             3
+#define TOKEN_SUB                             4
+#define TOKEN_MUL                             5
+#define TOKEN_DIV                             6
+#define TOKEN_PASS                            7
+#define TOKEN_DEF                             8
+#define TOKEN_NAME                            9
+#define TOKEN_COLON                          10
+#define TOKEN_LPAREN                         11
+#define TOKEN_RPAREN                         12
+#define TOKEN_COMMA                          13
+#define TOKEN_NEWLINE                        14
+#define TOKEN_INDENT                         15
+#define TOKEN_DEDENT                         16

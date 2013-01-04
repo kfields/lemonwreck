@@ -36,3 +36,4 @@ solution "LemonWreck"
 		--buildoptions { "-std=gnu++0x" }
 
 	include "../src/lwcalc"
+	include "../src/lwpython"
