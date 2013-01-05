@@ -1,10 +1,11 @@
 #ifndef _COMPILER_H
 #define _COMPILER_H
 
-#include "ast.h"
+#include "Ast.h"
 
-struct compiler {
-	ast_node *ast;
+class Compiler {
+public:
+	AstNode *ast;
 	char* errormsg;
 	//
 	void clear();

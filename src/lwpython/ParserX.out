@@ -1,0 +1,246 @@
+State 0:
+          file_input ::= * stmt
+          stmt ::= * simple_stmt
+          stmt ::= * compound_stmt
+          simple_stmt ::= * small_stmt
+          small_stmt ::= * pass_stmt
+          pass_stmt ::= * PASS
+          compound_stmt ::= * funcdef
+          funcdef ::= * DEF NAME parameters COLON suite
+
+                          PASS shift  25
+                           DEF shift  13
+                    file_input accept
+                          stmt shift  14
+                   simple_stmt shift  29
+                 compound_stmt shift  28
+                    small_stmt shift  27
+                     pass_stmt shift  26
+                       funcdef shift  24
+
+State 1:
+          stmt ::= * simple_stmt
+          stmt ::= * compound_stmt
+          simple_stmt ::= * small_stmt
+          small_stmt ::= * pass_stmt
+          pass_stmt ::= * PASS
+          compound_stmt ::= * funcdef
+          funcdef ::= * DEF NAME parameters COLON suite
+          suite ::= NEWLINE INDENT * stmt DEDENT
+
+                          PASS shift  25
+                           DEF shift  13
+                          stmt shift  10
+                   simple_stmt shift  29
+                 compound_stmt shift  28
+                    small_stmt shift  27
+                     pass_stmt shift  26
+                       funcdef shift  24
+
+State 2:
+          simple_stmt ::= * small_stmt
+          small_stmt ::= * pass_stmt
+          pass_stmt ::= * PASS
+          funcdef ::= DEF NAME parameters COLON * suite
+          suite ::= * simple_stmt
+          suite ::= * NEWLINE INDENT stmt DEDENT
+
+                          PASS shift  25
+                       NEWLINE shift  11
+                   simple_stmt shift  22
+                    small_stmt shift  27
+                     pass_stmt shift  26
+                         suite shift  23
+
+State 3:
+          parameters ::= LPAREN * varargslist RPAREN
+          parameters ::= LPAREN * RPAREN
+          varargslist ::= * fpdef
+          fpdef ::= * NAME
+          fpdef ::= * LPAREN fplist RPAREN
+
+                          NAME shift  17
+                        LPAREN shift  4
+                        RPAREN shift  19
+                   varargslist shift  9
+                         fpdef shift  18
+
+State 4:
+          fpdef ::= * NAME
+          fpdef ::= * LPAREN fplist RPAREN
+          fpdef ::= LPAREN * fplist RPAREN
+          fplist ::= * fpdef
+          fplist ::= * fpdef COMMA fpdef
+
+                          NAME shift  17
+                        LPAREN shift  4
+                         fpdef shift  7
+                        fplist shift  8
+
+State 5:
+          fpdef ::= * NAME
+          fpdef ::= * LPAREN fplist RPAREN
+          fplist ::= fpdef COMMA * fpdef
+
+                          NAME shift  17
+                        LPAREN shift  4
+                         fpdef shift  15
+
+State 6:
+          funcdef ::= DEF NAME * parameters COLON suite
+          parameters ::= * LPAREN varargslist RPAREN
+          parameters ::= * LPAREN RPAREN
+
+                        LPAREN shift  3
+                    parameters shift  12
+
+State 7:
+     (13) fplist ::= fpdef *
+          fplist ::= fpdef * COMMA fpdef
+
+                         COMMA shift  5
+                     {default} reduce 13
+
+State 8:
+          fpdef ::= LPAREN fplist * RPAREN
+
+                        RPAREN shift  16
+
+State 9:
+          parameters ::= LPAREN varargslist * RPAREN
+
+                        RPAREN shift  20
+
+State 10:
+          suite ::= NEWLINE INDENT stmt * DEDENT
+
+                        DEDENT shift  21
+
+State 11:
+          suite ::= NEWLINE * INDENT stmt DEDENT
+
+                        INDENT shift  1
+
+State 12:
+          funcdef ::= DEF NAME parameters * COLON suite
+
+                         COLON shift  2
+
+State 13:
+          funcdef ::= DEF * NAME parameters COLON suite
+
+                          NAME shift  6
+
+State 14:
+      (0) file_input ::= stmt *
+
+                             $ reduce 0
+
+State 15:
+     (14) fplist ::= fpdef COMMA fpdef *
+
+                     {default} reduce 14
+
+State 16:
+     (12) fpdef ::= LPAREN fplist RPAREN *
+
+                     {default} reduce 12
+
+State 17:
+     (11) fpdef ::= NAME *
+
+                     {default} reduce 11
+
+State 18:
+     (10) varargslist ::= fpdef *
+
+                     {default} reduce 10
+
+State 19:
+      (9) parameters ::= LPAREN RPAREN *
+
+                     {default} reduce 9
+
+State 20:
+      (8) parameters ::= LPAREN varargslist RPAREN *
+
+                     {default} reduce 8
+
+State 21:
+     (16) suite ::= NEWLINE INDENT stmt DEDENT *
+
+                     {default} reduce 16
+
+State 22:
+     (15) suite ::= simple_stmt *
+
+                     {default} reduce 15
+
+State 23:
+      (7) funcdef ::= DEF NAME parameters COLON suite *
+
+                     {default} reduce 7
+
+State 24:
+      (6) compound_stmt ::= funcdef *
+
+                     {default} reduce 6
+
+State 25:
+      (5) pass_stmt ::= PASS *
+
+                     {default} reduce 5
+
+State 26:
+      (4) small_stmt ::= pass_stmt *
+
+                     {default} reduce 4
+
+State 27:
+      (3) simple_stmt ::= small_stmt *
+
+                     {default} reduce 3
+
+State 28:
+      (2) stmt ::= compound_stmt *
+
+                     {default} reduce 2
+
+State 29:
+      (1) stmt ::= simple_stmt *
+
+                     {default} reduce 1
+
+----------------------------------------------------
+Symbols:
+    0: $:
+    1: INTEGER
+    2: FLOAT
+    3: ADD
+    4: SUB
+    5: MUL
+    6: DIV
+    7: PASS
+    8: DEF
+    9: NAME
+   10: COLON
+   11: LPAREN
+   12: RPAREN
+   13: COMMA
+   14: NEWLINE
+   15: INDENT
+   16: DEDENT
+   17: error:
+   18: expr:
+   19: file_input: PASS DEF
+   20: stmt: PASS DEF
+   21: simple_stmt: PASS
+   22: compound_stmt: DEF
+   23: small_stmt: PASS
+   24: pass_stmt: PASS
+   25: funcdef: DEF
+   26: parameters: LPAREN
+   27: suite: PASS NEWLINE
+   28: varargslist: NAME LPAREN
+   29: fpdef: NAME LPAREN
+   30: fplist: NAME LPAREN

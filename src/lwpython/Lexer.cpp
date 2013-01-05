@@ -1,13 +1,15 @@
-#include "Lexer.h"
 #include <stdio.h>
 #include <malloc.h>
 
+#include "Token.h"
+#include "Lexer.h"
+
 #define BSIZE BUFSIZ
 
-void Lexer::init(const char *filename)
+Lexer::Lexer(const char *filename)
 {
 	this->file = fopen(filename, "r" );
-
+	this->indentstack.push(0);
 	this->line = 0;
 	this->column = 0;
 
@@ -18,7 +20,52 @@ void Lexer::init(const char *filename)
 	this->ccursor = 0;
 	this->lim = 0;
 }
+Token *Lexer::read(){
+	Token *tok, *latok;
+	int indent = 0;
+	if(!this->queue.empty()){
+		tok = this->queue.front();
+		this->queue.pop();
+		return tok;
+	}
+	//else
+	tok = scan();
 
+	switch(tok->kind){
+
+		case TOKEN_EOF:
+			while(this->indentstack.top() > 0){
+				this->indentstack.pop();
+				this->queue.push(new Token(TOKEN_DEDENT));
+			}
+			this->queue.push(tok);
+			break;
+
+		case TOKEN_NEWLINE:
+			this->queue.push(tok); //push newline
+			latok = scan(); //get lookahead token
+			indent = latok->column;
+			if(indent > this->indentstack.top()){
+				this->queue.push(new Token(TOKEN_INDENT));
+				this->indentstack.push(indent);
+			}
+			else if(indent < this->indentstack.top()){
+				while(indent > this->indentstack.top()){
+					this->indentstack.pop();
+					this->queue.push(new Token(TOKEN_DEDENT));
+				}
+			}
+			this->queue.push(latok);
+			break;
+
+		default:
+			this->queue.push(tok);
+			break;
+	}
+	tok = this->queue.front();
+	this->queue.pop();
+	return tok;
+}
 void Lexer::fill()
 {
 	if(!this->eof) {
@@ -49,31 +96,31 @@ void Lexer::fill()
 		this->lim += cnt;
 	}
 }
-scanner_token* Lexer::create_token(int kind) {
-	scanner_token* token = (scanner_token*)malloc(sizeof(scanner_token));
+Token* Lexer::create_token(int kind) {
+	Token* token = (Token*)malloc(sizeof(Token));
 	token->kind = kind;
 	token->line = this->line;
 	token->column = this->column;
 	return token;
 }
-scanner_token* Lexer::emit_newline() {
-	scanner_token* token = create_token(TOKEN_NEWLINE);
+Token* Lexer::emit_newline() {
+	Token* token = create_token(TOKEN_NEWLINE);
 	this->pos = this->cursor;
 	this->line++;
 	return token;
 }
-scanner_token* Lexer::create_name_token(char* value) {
-	scanner_token* token = create_token(TOKEN_NAME);
+Token* Lexer::create_name_token(char* value) {
+	Token* token = create_token(TOKEN_NAME);
 	token->data.str = value;
 	return token;
 }
-scanner_token* Lexer::create_int_token(int value) {
-	scanner_token* token = create_token(TOKEN_INTEGER);
+Token* Lexer::create_int_token(int value) {
+	Token* token = create_token(TOKEN_INTEGER);
 	token->data.num = value;
 	return token;
 }
-scanner_token* Lexer::create_float_token(float value) {
-	scanner_token* token = create_token(TOKEN_FLOAT);
+Token* Lexer::create_float_token(float value) {
+	Token* token = create_token(TOKEN_FLOAT);
 	token->data.num = value;
 	return token;
 }
@@ -87,7 +134,6 @@ void Lexer::capture()
 	size_t len = this->cursor - this->ccursor;
 	memcpy(this->cbuffer, this->ccursor, len);
 	this->cbuffer[len] = '\0';
-	//capture_begin();
 }
 scanchar_t *Lexer::capture_string()
 {
@@ -95,7 +141,6 @@ scanchar_t *Lexer::capture_string()
 	scanchar_t* str = (scanchar_t*)malloc(len + 1);
 	memcpy(str, this->ccursor, len);
 	str[len] = '\0';
-	//capture_begin();
 	return str;
 }
 int Lexer::capture_int()

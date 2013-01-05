@@ -4,13 +4,13 @@
 /* First off, code is included that follows the "include" declaration
 ** in the input grammar file. */
 #include <stdio.h>
-#line 1 "parserx.y"
+#line 1 "ParserX.y"
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "scanner.h"
-#include "parser.h"
-#line 14 "parserx.c"
+#include "Lexer.h"
+#include "Parser.h"
+#line 14 "ParserX.cpp"
 /* Next is all token values, in a form suitable for use by makeheaders.
 ** This section will be null unless lemon is run with the -m switch.
 */
@@ -63,18 +63,18 @@
 #define YYCODETYPE unsigned char
 #define YYNOCODE 32
 #define YYACTIONTYPE unsigned char
-#define ParseTOKENTYPE scanner_token*
+#define ParseTOKENTYPE Token*
 typedef union {
   int yyinit;
   ParseTOKENTYPE yy0;
-  ast_node* yy48;
+  AstNode* yy19;
 } YYMINORTYPE;
 #ifndef YYSTACKDEPTH
 #define YYSTACKDEPTH 100
 #endif
-#define ParseARG_SDECL  compiler *pComp;
-#define ParseARG_PDECL , compiler *pComp
-#define ParseARG_FETCH  compiler *pComp = yypParser->pComp
+#define ParseARG_SDECL  Compiler *pComp;
+#define ParseARG_PDECL , Compiler *pComp
+#define ParseARG_FETCH  Compiler *pComp = yypParser->pComp
 #define ParseARG_STORE yypParser->pComp = pComp
 #define YYNSTATE 30
 #define YYNRULE 17
@@ -561,10 +561,10 @@ static void yyStackOverflow(yyParser *yypParser, YYMINORTYPE *yypMinor){
    while( yypParser->yyidx>=0 ) yy_pop_parser_stack(yypParser);
    /* Here code is inserted which will execute if the parser
    ** stack every overflows */
-#line 17 "parserx.y"
+#line 17 "ParserX.y"
 
 	fprintf(stderr,"Giving up.  Parser stack overflow\n");
-#line 568 "parserx.c"
+#line 568 "ParserX.cpp"
    ParseARG_STORE; /* Suppress warning about unused %extra_argument var */
 }
 
@@ -755,10 +755,10 @@ static void yy_parse_failed(
   while( yypParser->yyidx>=0 ) yy_pop_parser_stack(yypParser);
   /* Here code is inserted which will be executed whenever the
   ** parser fails */
-#line 14 "parserx.y"
+#line 14 "ParserX.y"
 
 	fprintf(stderr,"Giving up.  Parser is hopelessly lost...\n");
-#line 762 "parserx.c"
+#line 762 "ParserX.cpp"
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 #endif /* YYNOERRORRECOVERY */
@@ -773,10 +773,10 @@ static void yy_syntax_error(
 ){
   ParseARG_FETCH;
 #define TOKEN (yyminor.yy0)
-#line 11 "parserx.y"
+#line 11 "ParserX.y"
 
 	fprintf(stderr, "Syntax error\n");
-#line 780 "parserx.c"
+#line 780 "ParserX.cpp"
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 
@@ -795,10 +795,10 @@ static void yy_accept(
   while( yypParser->yyidx>=0 ) yy_pop_parser_stack(yypParser);
   /* Here code is inserted which will be executed whenever the
   ** parser accepts */
-#line 8 "parserx.y"
+#line 8 "ParserX.y"
 
 	//printf("Parsing complete!\n");
-#line 802 "parserx.c"
+#line 802 "ParserX.cpp"
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 

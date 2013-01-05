@@ -2,31 +2,29 @@
 #include <stdlib.h>
 #include <malloc.h>
 
-#include "token.h"
-#include "compiler.h"
+#include "Token.h"
+#include "Compiler.h"
 #include "Lexer.h"
-#include "parser.h"
+#include "Parser.h"
 
-int compiler::compile_file(char* s)
+int Compiler::compile_file(char* s)
 {
-	scanner_token *token;
-	Lexer *state;
+	Token *token;
+	Lexer *lexer;
 	void* pParser = ParseAlloc(malloc);
 
 	clear();
 
 	ParseTrace(stdout, ">>");
 
-	state = new Lexer();
-	state->init(s);
+	lexer = new Lexer(s);
 
 	for(;;) {
-		token = state->scan();
-		if(token == NULL) break;
+		token = lexer->read();
 		Parse(pParser, token->kind, token, this);
+		if(token->kind == TOKEN_EOF) break;
 	}
 
-	Parse(pParser, 0, 0, this);
 	ParseFree(pParser, free);
 
 	if(errormsg != NULL)
@@ -34,11 +32,11 @@ int compiler::compile_file(char* s)
 	else
 		return 1;
 }
-void compiler::clear()
+void Compiler::clear()
 {
 	errormsg = NULL;
 }
-void compiler::error(char *errmsg)
+void Compiler::error(char *errmsg)
 {
 	errormsg = errmsg;
 }

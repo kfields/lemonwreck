@@ -4,7 +4,7 @@
 
 #include "Lexer.h"
 
-scanner_token *Lexer::scan() {
+Token *Lexer::scan() {
 
 #define YYCTYPE char
 #define YYCURSOR (this->cursor)
@@ -25,6 +25,8 @@ scanner_token *Lexer::scan() {
         ANY = [^];
 
 		"def" { return create_token(TOKEN_DEF); }
+		
+		"pass" { return create_token(TOKEN_PASS); }
 
 		NAME { return create_name_token(capture_string()); }
 
@@ -48,7 +50,7 @@ scanner_token *Lexer::scan() {
 
 		")" { return create_token(TOKEN_RPAREN); }
 		
-		"\000" { return NULL; }
+		"\000" { return create_token(TOKEN_EOF); }
 		
 		NEWLINE { return emit_newline(); }
 		

@@ -5,13 +5,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <queue>
+#include <stack>
 
-#include "token.h"
+#include "TokenStream.h"
+#include "Token.h"
 
 typedef char scanchar_t;
 
-class Lexer {
+#define TOKEN_EOF 0
+
+class Lexer : TokenStream {
 public:
+	std::queue<Token*> queue;
+	std::stack<int> indentstack;
 	//int fd; //file descriptor
 	FILE *file;
 	int line;
@@ -29,16 +36,17 @@ public:
 	scanchar_t* marker;
 	scanchar_t* eof;
 	//
-	void init(const char *filename);
-	scanner_token *scan();
+	Lexer(const char *filename);
+	virtual Token *read();
+	Token *scan();
 	void fill();
 
-	scanner_token* emit_newline();
+	Token* emit_newline();
 
-	scanner_token* create_token(int kind);
-	scanner_token* create_name_token(char* value);
-	scanner_token* create_int_token(int value);
-	scanner_token* create_float_token(float value);
+	Token* create_token(int kind);
+	Token* create_name_token(char* value);
+	Token* create_int_token(int value);
+	Token* create_float_token(float value);
 
 	void capture_begin();
 	void capture();

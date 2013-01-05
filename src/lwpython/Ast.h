@@ -1,24 +1,25 @@
 #ifndef _AST_H
 #define _AST_H
 
-#include "token.h"
+#include "Token.h"
 
-enum ast_kind {
+enum AstKind {
 	AST_LITERAL,
 	AST_BINARY
 };
-typedef struct _ast_node {
-	enum ast_kind kind;
-	scanner_token *token;
+
+struct AstNode {
+	enum AstKind kind;
+	Token *token;
 	union {
 		struct {
-			struct _ast_node *left;
-			struct _ast_node *right;
+			AstNode *left;
+			AstNode *right;
 		} binary;
 	} node ;
-} ast_node;
+};
 
-ast_node* create_literal_ast(scanner_token *token);
-ast_node* create_binary_ast(scanner_token *token, ast_node* left, ast_node* right);
+AstNode* create_literal_ast(Token *token);
+AstNode* create_binary_ast(Token *token, AstNode* left, AstNode* right);
 
 #endif //_AST_H

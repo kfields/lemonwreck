@@ -1,8 +1,8 @@
 %include {
 #include <stdio.h>
 #include <stdlib.h>
-#include "scanner.h"
-#include "parser.h"
+#include "Lexer.h"
+#include "Parser.h"
 }
 
 %parse_accept {
@@ -17,14 +17,14 @@
 %stack_overflow {
 	fprintf(stderr,"Giving up.  Parser stack overflow\n");
 }
-%extra_argument { compiler *pComp}
+%extra_argument { Compiler *pComp}
 %token_prefix TOKEN_
-%token_type {scanner_token*}
-%default_type {ast_node*}
-%type expr {ast_node*}
+%token_type {Token*}
+%default_type {AstNode*}
+%type expr {AstNode*}
 
-%type INTEGER {scanner_token*}
-%type FLOAT {scanner_token*}
+%type INTEGER {Token*}
+%type FLOAT {Token*}
 %left ADD SUB.
 %left MUL DIV.
 

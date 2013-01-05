@@ -6,16 +6,13 @@
 
 #include <direct.h>
 
-#include "parser.h"
+#include "Compiler.h"
 
 int main(int argc, char **argv)
 {
-	compiler comp;
-	//char cwdbuf[BUFSIZ];
-	//char *cwd = getcwd(cwdbuf, BUFSIZ);
-	//printf(cwd);
+	Compiler comp;
 	comp.compile_file("../input/test.py");
-	//compile_file(&comp, "..\\input\\test.py");
+	printf("Press any key to exit.\n");
 	getchar();
 	return EXIT_SUCCESS;
 }

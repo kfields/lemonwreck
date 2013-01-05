@@ -1,9 +1,9 @@
 #ifndef _TOKEN_H
 #define _TOKEN_H
 
-#include "parserx.h" //include kinds
+#include "ParserX.h" //include kinds
 
-struct scanner_token {
+struct Token {
 	int kind;
 	int line;
 	int column;
@@ -11,6 +11,10 @@ struct scanner_token {
 		float num;
 		char* str;
 	} data;
+	//
+	Token(int kind){
+		this->kind = kind;
+	}
 };
 
 #endif //_TOKEN_H

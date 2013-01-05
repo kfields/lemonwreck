@@ -1,16 +1,16 @@
-#include "ast.h"
+#include "Ast.h"
 #include "malloc.h"
 
-ast_node* create_literal_ast(scanner_token *token)
+AstNode* create_literal_ast(Token *token)
 {
-	ast_node* node = malloc(sizeof(ast_node));
+	AstNode* node = new AstNode();
 	node->kind = AST_LITERAL;
 	node->token = token;
 	return node;
 }
-ast_node* create_binary_ast(scanner_token *token, ast_node* left, ast_node* right)
+AstNode* create_binary_ast(Token *token, AstNode* left, AstNode* right)
 {
-	ast_node* node = malloc(sizeof(ast_node));
+	AstNode* node = new AstNode();
 	node->kind = AST_BINARY;
 	node->token = token;
 	node->node.binary.left = left;

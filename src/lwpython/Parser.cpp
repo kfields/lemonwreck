@@ -1,5 +1,5 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "scanner.h"
-#include "parser.h"
+#include "Lexer.h"
+#include "Parser.h"
